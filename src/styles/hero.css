@@ -1,0 +1,154 @@
+/* Hero Section Styles */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--light-cream) 0%, #FFF9F0 100%);
+  padding-top: 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.tea-leaf-decoration {
+  position: absolute;
+  font-size: 15rem;
+  color: var(--primary-brown);
+  opacity: 0.1;
+  top: -50px;
+  right: -50px;
+}
+
+.hero-content {
+  text-align: center;
+  z-index: 10;
+  max-width: 800px;
+  padding: 0 20px;
+}
+
+.hero-title {
+  font-size: 4rem;
+  font-weight: 800;
+  color: var(--primary-brown);
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.hero-tagline {
+  font-size: 1.8rem;
+  color: var(--tea-green);
+  font-style: italic;
+  margin-bottom: 40px;
+  font-weight: 500;
+}
+
+.hero-btn {
+  background: linear-gradient(135deg, var(--primary-brown), var(--dark-brown));
+  color: var(--white);
+  border: none;
+  padding: 16px 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 8px 20px rgba(139, 69, 19, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  transition: left 0.5s ease;
+}
+
+.hero-btn:hover::before {
+  left: 100%;
+}
+
+.hero-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Floating Decorations */
+.floating-cup {
+  position: absolute;
+  font-size: 3rem;
+  color: var(--primary-brown);
+  opacity: 0.2;
+  z-index: 5;
+}
+
+.floating-cup-1 {
+  top: 20%;
+  left: 5%;
+}
+
+.floating-cup-2 {
+  bottom: 20%;
+  right: 5%;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .hero {
+    min-height: 80vh;
+    padding-top: 60px;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-tagline {
+    font-size: 1.3rem;
+  }
+
+  .floating-cup {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    min-height: 60vh;
+    padding-top: 40px;
+  }
+
+  .hero-title {
+    font-size: 1.8rem;
+  }
+
+  .hero-tagline {
+    font-size: 1rem;
+  }
+
+  .hero-btn {
+    padding: 12px 30px;
+    font-size: 1rem;
+  }
+
+  .floating-cup {
+    display: none;
+  }
+
+  .tea-leaf-decoration {
+    font-size: 8rem;
+  }
+}

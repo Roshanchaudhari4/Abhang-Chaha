@@ -1,0 +1,242 @@
+/* Contact Section Styles */
+.contact {
+  background: linear-gradient(135deg, #FFFBF5 0%, #FFF9F0 100%);
+  padding: 80px 20px;
+}
+
+.contact-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.contact-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  margin-top: 40px;
+}
+
+/* Contact Form */
+.contact-form-wrapper {
+  position: relative;
+}
+
+.contact-form {
+  background: var(--white);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 8px 30px rgba(139, 69, 19, 0.1);
+  border: 2px solid var(--border-light);
+}
+
+.contact-form .form-group {
+  margin-bottom: 25px;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-form label {
+  font-weight: 600;
+  color: var(--primary-brown);
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 12px 15px;
+  border: 2px solid var(--border-light);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: var(--font-family);
+  transition: var(--transition);
+  background: #FAFAF8;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: var(--primary-brown);
+  background: var(--white);
+  box-shadow: 0 0 10px rgba(139, 69, 19, 0.1);
+}
+
+.contact-form input.error,
+.contact-form textarea.error {
+  border-color: #e74c3c;
+  background: #ffe6e6;
+}
+
+.error-text {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  margin-top: 5px;
+}
+
+/* Success Message */
+.contact-form-wrapper .success-message {
+  background: #d4edda;
+  border: 2px solid #28a745;
+  color: #155724;
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.contact-form-wrapper .success-message i {
+  font-size: 1.5rem;
+  color: #28a745;
+}
+
+/* Submit Button */
+.contact-form .submit-btn {
+  background: linear-gradient(135deg, var(--primary-brown), var(--dark-brown));
+  color: var(--white);
+  border: none;
+  padding: 14px 40px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.contact-form .submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(139, 69, 19, 0.3);
+}
+
+/* Contact Info Wrapper */
+.contact-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Address Card */
+.address-card {
+  background: var(--white);
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  border: 2px solid var(--border-light);
+  box-shadow: 0 8px 20px rgba(139, 69, 19, 0.1);
+  transition: var(--transition);
+}
+
+.address-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(139, 69, 19, 0.2);
+}
+
+.address-card i {
+  font-size: 3rem;
+  color: var(--tea-green);
+  margin-bottom: 15px;
+}
+
+.address-card h3 {
+  font-size: 1.5rem;
+  color: var(--primary-brown);
+  margin-bottom: 10px;
+}
+
+.address-card p {
+  color: #666;
+  line-height: 1.8;
+  font-size: 1rem;
+}
+
+/* Map Placeholder */
+.map-placeholder {
+  background: linear-gradient(135deg, var(--border-light), #F5E6D3);
+  border: 2px dashed var(--primary-brown);
+  border-radius: 15px;
+  padding: 50px 20px;
+  text-align: center;
+  transition: var(--transition);
+  cursor: pointer;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.map-placeholder i {
+  font-size: 4rem;
+  color: var(--primary-brown);
+  opacity: 0.5;
+}
+
+.map-placeholder p {
+  font-size: 1.1rem;
+  color: var(--primary-brown);
+  font-weight: 600;
+}
+
+/* Mobile Responsive */
+@media (max-width: 1024px) {
+  .contact-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact {
+    padding: 60px 15px;
+  }
+
+  .contact-form {
+    padding: 25px;
+  }
+
+  .address-card {
+    padding: 20px;
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}
+
+@media (max-width: 480px) {
+  .contact {
+    padding: 40px 15px;
+  }
+
+  .contact-form {
+    padding: 15px;
+  }
+
+  .map-placeholder {
+    min-height: 200px;
+    padding: 30px 15px;
+  }
+
+  .map-placeholder i {
+    font-size: 3rem;
+  }
+
+  .address-card h3 {
+    font-size: 1.2rem;
+  }
+}
