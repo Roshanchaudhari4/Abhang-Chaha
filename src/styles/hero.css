@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--light-cream) 0%, #FFF9F0 100%);
+  background: linear-gradient(135deg, #f5e6d3 0%, #e8d4b8 50%, #d4a574 100%);
   padding-top: 80px;
   position: relative;
   overflow: hidden;
@@ -16,17 +16,36 @@
   left: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.1;
+  pointer-events: none;
+}
+
+.hero-gradient {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 20% 50%, rgba(139, 69, 19, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 80% 50%, rgba(45, 80, 22, 0.08) 0%, transparent 50%);
   pointer-events: none;
 }
 
 .tea-leaf-decoration {
   position: absolute;
-  font-size: 15rem;
-  color: var(--primary-brown);
-  opacity: 0.1;
-  top: -50px;
+  font-size: 200px;
+  opacity: 0.3;
+}
+
+.tea-leaf-1 {
+  top: -20px;
   right: -50px;
+  color: var(--tea-green);
+}
+
+.tea-leaf-2 {
+  bottom: -30px;
+  left: -60px;
+  font-size: 250px;
+  color: var(--primary-brown);
+  opacity: 0.15;
 }
 
 .hero-content {
@@ -36,54 +55,84 @@
   padding: 0 20px;
 }
 
-.hero-title {
+.hero-icon {
   font-size: 4rem;
-  font-weight: 800;
   color: var(--primary-brown);
   margin-bottom: 20px;
+  display: inline-block;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: var(--primary-brown);
+  margin-bottom: 15px;
+  letter-spacing: 1px;
   line-height: 1.2;
+}
+
+.brand-highlight {
+  background: linear-gradient(135deg, var(--primary-brown), var(--dark-brown));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .hero-tagline {
   font-size: 1.8rem;
-  color: var(--tea-green);
-  font-style: italic;
+  color: var(--dark-brown);
+  margin-bottom: 15px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  color: var(--text-dark);
   margin-bottom: 40px;
-  font-weight: 500;
+  opacity: 0.8;
+  font-weight: 300;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .hero-btn {
-  background: linear-gradient(135deg, var(--primary-brown), var(--dark-brown));
-  color: var(--white);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 35px;
   border: none;
-  padding: 16px 50px;
+  border-radius: 50px;
   font-size: 1.1rem;
   font-weight: 600;
-  border-radius: 50px;
   cursor: pointer;
   transition: var(--transition);
-  box-shadow: 0 8px 20px rgba(139, 69, 19, 0.3);
-  position: relative;
-  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
-.hero-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.1);
-  transition: left 0.5s ease;
+.primary-btn {
+  background: var(--primary-brown);
+  color: var(--white);
 }
 
-.hero-btn:hover::before {
-  left: 100%;
+.primary-btn:hover {
+  background: var(--dark-brown);
 }
 
-.hero-btn:hover {
-  transform: translateY(-2px);
+.secondary-btn {
+  background: var(--tea-green);
+  color: var(--white);
+  border: 2px solid var(--tea-green);
+}
+
+.secondary-btn:hover {
+  background: transparent;
+  color: var(--tea-green);
 }
 
 /* Floating Decorations */

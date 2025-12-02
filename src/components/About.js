@@ -8,18 +8,27 @@ const About = () => {
     {
       icon: 'fa-leaf',
       title: 'Premium Quality',
-      description: 'We source the finest tea leaves from across India'
+      description: 'We source the finest tea leaves from across India',
+      color: '#2D5016'
     },
     {
       icon: 'fa-fire',
       title: 'Traditional Recipe',
-      description: 'Authentic recipes passed down through generations'
+      description: 'Authentic recipes passed down through generations',
+      color: '#FF6B35'
     },
     {
       icon: 'fa-heart',
       title: 'Made with Love',
-      description: 'Every cup is crafted with care and passion'
+      description: 'Every cup is crafted with care and passion',
+      color: '#E63946'
     }
+  ];
+
+  const stats = [
+    { number: '500+', label: 'Happy Customers' },
+    { number: '15+', label: 'Tea Varieties' },
+    { number: '10 yrs', label: 'Experience' }
   ];
 
   const containerVariants = {
@@ -55,7 +64,7 @@ const About = () => {
           className="section-title"
           variants={itemVariants}
         >
-          About Abhang Chaha
+          <i className="fas fa-info-circle"></i> About Abhang Chaha
         </motion.h2>
 
         <motion.p 
@@ -67,6 +76,30 @@ const About = () => {
           bring people together. Our mission is to serve traditional Indian chai 
           with a modern twist, made from the freshest ingredients.
         </motion.p>
+
+        {/* Stats Section */}
+        <motion.div 
+          className="stats-grid"
+          variants={containerVariants}
+        >
+          {stats.map((stat, index) => (
+            <motion.div 
+              key={index}
+              className="stat-card"
+              variants={itemVariants}
+              whileHover={{ scale: 1.05 }}
+            >
+              <motion.div 
+                className="stat-number"
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                {stat.number}
+              </motion.div>
+              <p>{stat.label}</p>
+            </motion.div>
+          ))}
+        </motion.div>
 
         <motion.div 
           className="features-grid"
@@ -81,8 +114,16 @@ const About = () => {
                 y: -10,
                 boxShadow: '0 15px 40px rgba(139, 69, 19, 0.2)'
               }}
+              style={{ borderTopColor: feature.color }}
             >
-              <i className={`fas ${feature.icon}`}></i>
+              <motion.div 
+                className="feature-icon"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+                style={{ color: feature.color }}
+              >
+                <i className={`fas ${feature.icon}`}></i>
+              </motion.div>
               <h3>{feature.title}</h3>
               <p>{feature.description}</p>
             </motion.div>

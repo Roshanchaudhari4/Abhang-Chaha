@@ -5,9 +5,16 @@
   left: 0;
   width: 100%;
   background: linear-gradient(135deg, var(--primary-brown) 0%, var(--dark-brown) 100%);
-  box-shadow: 0 2px 15px rgba(139, 69, 19, 0.2);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   padding: 1rem 0;
+  transition: var(--transition);
+}
+
+.navbar.scrolled {
+  background: linear-gradient(135deg, var(--dark-brown) 0%, #4a3219 100%);
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+  padding: 0.7rem 0;
 }
 
 .navbar-container {
@@ -28,11 +35,22 @@
   align-items: center;
   gap: 10px;
   cursor: pointer;
+  transition: var(--transition);
+}
+
+.navbar-logo:hover {
+  transform: scale(1.05);
 }
 
 .navbar-logo i {
   font-size: 1.8rem;
-  color: var(--tea-green);
+  color: #FFD700;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
 }
 
 .nav-items {
@@ -42,6 +60,11 @@
   align-items: center;
 }
 
+.nav-items li {
+  position: relative;
+  cursor: pointer;
+}
+
 .nav-items li a {
   color: var(--light-cream);
   text-decoration: none;
@@ -49,21 +72,28 @@
   font-size: 1rem;
   position: relative;
   transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
-.nav-items li a::after {
-  content: '';
+.nav-items li a:hover {
+  color: #FFD700;
+}
+
+.nav-indicator {
   position: absolute;
-  bottom: -5px;
+  bottom: -8px;
   left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--tea-green);
-  transition: width 0.3s ease;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #FFD700, var(--tea-green));
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
-.nav-items li a:hover::after {
-  width: 100%;
+.nav-items li.active a {
+  color: #FFD700;
 }
 
 /* Hamburger Menu */
