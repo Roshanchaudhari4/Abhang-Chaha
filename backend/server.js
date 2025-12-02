@@ -1,15 +1,9 @@
-/**
- * Server entry point for Abhang Chaha backend
- * - Loads environment variables
- * - Connects to MongoDB
- * - Configures middlewares (CORS, JSON)
- * - Registers API routes
- */
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const formRoutes = require('./routes/formRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 
 const app = express();
 
@@ -26,6 +20,7 @@ connectDB(MONGO_URI).catch(err => {
 
 // Routes
 app.use('/api', formRoutes);
+app.use('/api', orderRoutes);
 
 // Health check
 app.get('/', (req, res) => res.send('Abhang Chaha Backend is running'));

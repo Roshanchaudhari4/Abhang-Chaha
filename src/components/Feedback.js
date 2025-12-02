@@ -1,8 +1,18 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import {
+  formContainerVariants,
+  inputFocusVariants,
+  buttonRippleVariants,
+  successMessageVariants,
+  errorShakeVariants,
+  errorHighlightVariants,
+  sectionRevealVariants,
+  containerVariants,
+} from '../animations/variants';
 import '../styles/feedback.css';
 
-// Feedback section with form validation and success message
+// Feedback section with form validation and animated feedback
 const Feedback = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -14,6 +24,7 @@ const Feedback = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState('');
+  const [shakeField, setShakeField] = useState(null);
 
   // Validate form inputs
   const validateForm = () => {
@@ -46,6 +57,9 @@ const Feedback = () => {
 
     if (Object.keys(newErrors).length !== 0) {
       setErrors(newErrors);
+      // Trigger shake animation on error
+      setShakeField('form');
+      setTimeout(() => setShakeField(null), 400);
       return;
     }
 
@@ -108,39 +122,31 @@ const Feedback = () => {
     }
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 }
-    }
-  };
-
   return (
     <section id="feedback" className="feedback">
       <motion.div 
         className="feedback-container"
+        variants={formContainerVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
-        variants={containerVariants}
       >
         <motion.h2 
           className="section-title"
-          variants={containerVariants}
+          variants={sectionRevealVariants}
         >
           Share Your Feedback
         </motion.h2>
 
+        {/* Success Message with animation */}
         <AnimatePresence>
           {submitted && (
             <motion.div 
               className="success-message"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.3 }}
+              variants={successMessageVariants}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
             >
               <i className="fas fa-check-circle"></i>
               <p>Thank you! Your feedback has been received.</p>
@@ -149,10 +155,15 @@ const Feedback = () => {
         </AnimatePresence>
 
         {serverError && (
-          <div className="server-error">
+          <motion.div 
+            className="server-error"
+            variants={errorShakeVariants}
+            initial="rest"
+            animate={serverError ? "shake" : "rest"}
+          >
             <i className="fas fa-exclamation-circle"></i>
             <span>{serverError}</span>
-          </div>
+          </motion.div>
         )}
 
         <motion.form 
@@ -160,15 +171,16 @@ const Feedback = () => {
           onSubmit={handleSubmit}
           variants={containerVariants}
         >
-          {/* Name Input */}
+          {/* Name Input - Animated */}
           <motion.div 
-            className="form-group"
-            whileInView={{ y: 0, opacity: 1 }}
-            initial={{ y: 20, opacity: 0 }}
-            transition={{ delay: 0.1 }}
+            className={`form-group ${shakeField === 'form' || errors.name ? 'error-state' : ''}`}
+            variants={errorShakeVariants}
+            initial="rest"
+            animate={shakeField === 'form' ? "shake" : "rest"}
+            transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
             <label htmlFor="name">Name *</label>
-            <input
+            <motion.input
               type="text"
               id="name"
               name="name"
@@ -176,19 +188,36 @@ const Feedback = () => {
               onChange={handleChange}
               className={errors.name ? 'error' : ''}
               placeholder="Your name"
+              variants={inputFocusVariants}
+              initial="rest"
+              whileFocus="focus"
             />
-            {errors.name && <span className="error-text">{errors.name}</span>}
+            {/* Error message with animation */}
+            <AnimatePresence>
+              {errors.name && (
+                <motion.span 
+                  className="error-text"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {errors.name}
+                </motion.span>
+              )}
+            </AnimatePresence>
           </motion.div>
 
-          {/* Email Input */}
+          {/* Email Input - Animated */}
           <motion.div 
-            className="form-group"
-            whileInView={{ y: 0, opacity: 1 }}
-            initial={{ y: 20, opacity: 0 }}
-            transition={{ delay: 0.2 }}
+            className={`form-group ${shakeField === 'form' || errors.email ? 'error-state' : ''}`}
+            variants={errorShakeVariants}
+            initial="rest"
+            animate={shakeField === 'form' ? "shake" : "rest"}
+            transition={{ type: "spring", stiffness: 400, damping: 10, delay: 0.05 }}
           >
             <label htmlFor="email">Email *</label>
-            <input
+            <motion.input
               type="email"
               id="email"
               name="email"
@@ -196,19 +225,36 @@ const Feedback = () => {
               onChange={handleChange}
               className={errors.email ? 'error' : ''}
               placeholder="your@email.com"
+              variants={inputFocusVariants}
+              initial="rest"
+              whileFocus="focus"
             />
-            {errors.email && <span className="error-text">{errors.email}</span>}
+            {/* Error message with animation */}
+            <AnimatePresence>
+              {errors.email && (
+                <motion.span 
+                  className="error-text"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {errors.email}
+                </motion.span>
+              )}
+            </AnimatePresence>
           </motion.div>
 
-          {/* Message Input */}
+          {/* Message Input - Animated */}
           <motion.div 
-            className="form-group"
-            whileInView={{ y: 0, opacity: 1 }}
-            initial={{ y: 20, opacity: 0 }}
-            transition={{ delay: 0.3 }}
+            className={`form-group ${shakeField === 'form' || errors.message ? 'error-state' : ''}`}
+            variants={errorShakeVariants}
+            initial="rest"
+            animate={shakeField === 'form' ? "shake" : "rest"}
+            transition={{ type: "spring", stiffness: 400, damping: 10, delay: 0.1 }}
           >
             <label htmlFor="message">Message *</label>
-            <textarea
+            <motion.textarea
               id="message"
               name="message"
               value={formData.message}
@@ -216,16 +262,34 @@ const Feedback = () => {
               className={errors.message ? 'error' : ''}
               placeholder="Your feedback..."
               rows="5"
-            ></textarea>
-            {errors.message && <span className="error-text">{errors.message}</span>}
+              variants={inputFocusVariants}
+              initial="rest"
+              whileFocus="focus"
+            ></motion.textarea>
+            {/* Error message with animation */}
+            <AnimatePresence>
+              {errors.message && (
+                <motion.span 
+                  className="error-text"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {errors.message}
+                </motion.span>
+              )}
+            </AnimatePresence>
           </motion.div>
 
-          {/* Submit Button */}
+          {/* Submit Button - Enhanced animations */}
           <motion.button 
             type="submit"
             className="submit-btn"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            variants={buttonRippleVariants}
+            initial="rest"
+            whileHover="hover"
+            whileTap="tap"
             disabled={loading}
           >
             <span>{loading ? 'Sending...' : 'Send Feedback'}</span>

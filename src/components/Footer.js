@@ -1,5 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import {
+  cardFadeInVariants,
+  hoverBounceVariants,
+  hoverGlowVariants,
+  containerVariants,
+  sectionRevealVariants,
+} from '../animations/variants';
 import '../styles/footer.css';
 
 // Footer component with social media links
@@ -22,75 +29,107 @@ const Footer = () => {
   return (
     <motion.footer 
       className="footer"
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-      viewport={{ once: true }}
+      variants={sectionRevealVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.5 }}
     >
-      <div className="footer-container">
-        {/* Brand Section */}
+      <motion.div 
+        className="footer-container"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {/* Brand Section - Fade in */}
         <motion.div 
           className="footer-brand"
-          whileHover={{ scale: 1.05 }}
+          variants={cardFadeInVariants}
+          whileHover="hover"
         >
-          <i className="fas fa-leaf"></i>
+          <motion.i 
+            className="fas fa-leaf"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
+          ></motion.i>
           <h3>Abhang Chaha</h3>
           <p>"Chaha jo dil jeet le"</p>
         </motion.div>
 
-        {/* Social Links */}
+        {/* Social Links - Bounce on hover */}
         <motion.div 
           className="footer-social"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
+          variants={cardFadeInVariants}
+          custom={1}
         >
           <h4>Follow Us</h4>
-          <div className="social-icons">
+          <motion.div 
+            className="social-icons"
+            variants={containerVariants}
+          >
             {socialLinks.map((link, index) => (
               <motion.a 
                 key={index}
                 href={link.url}
                 title={link.label}
                 className="social-link"
-                whileHover={{ 
-                  scale: 1.2,
-                  rotate: 10
-                }}
-                whileTap={{ scale: 0.9 }}
+                variants={hoverBounceVariants}
+                initial="rest"
+                whileHover="hover"
+                whileTap={{ scale: 0.85 }}
               >
                 <i className={link.icon}></i>
               </motion.a>
             ))}
-          </div>
+          </motion.div>
         </motion.div>
 
-        {/* Quick Links */}
+        {/* Quick Links - Fade in with stagger */}
         <motion.div 
           className="footer-links"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
+          variants={cardFadeInVariants}
+          custom={2}
         >
           <h4>Quick Links</h4>
-          <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#menu">Menu</a></li>
-            <li><a href="#gallery">Gallery</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
+          <motion.ul
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.li variants={cardFadeInVariants}>
+              <motion.a href="#home" whileHover={{ x: 5 }}>Home</motion.a>
+            </motion.li>
+            <motion.li variants={cardFadeInVariants}>
+              <motion.a href="#menu" whileHover={{ x: 5 }}>Menu</motion.a>
+            </motion.li>
+            <motion.li variants={cardFadeInVariants}>
+              <motion.a href="#gallery" whileHover={{ x: 5 }}>Gallery</motion.a>
+            </motion.li>
+            <motion.li variants={cardFadeInVariants}>
+              <motion.a href="#contact" whileHover={{ x: 5 }}>Contact</motion.a>
+            </motion.li>
+          </motion.ul>
         </motion.div>
-      </div>
+      </motion.div>
 
-      {/* Copyright */}
+      {/* Copyright - Fade in with heart pulse */}
       <motion.div 
         className="footer-bottom"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ delay: 0.4 }}
+        variants={cardFadeInVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.8 }}
       >
         <p>© {currentYear} Abhang Chaha. All Rights Reserved.</p>
-        <p>Made with <i className="fas fa-heart"></i> for tea lovers</p>
+        <p>
+          Made with{' '}
+          <motion.i 
+            className="fas fa-heart"
+            animate={{ scale: [1, 1.2, 1] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+            style={{ color: '#E63946' }}
+          />{' '}
+          for tea lovers
+        </p>
       </motion.div>
     </motion.footer>
   );

@@ -1,5 +1,16 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import {
+  formContainerVariants,
+  inputFocusVariants,
+  buttonRippleVariants,
+  successMessageVariants,
+  errorShakeVariants,
+  cardHoverVariants,
+  containerVariants,
+  sectionRevealVariants,
+  cardFadeInVariants,
+} from '../animations/variants';
 import '../styles/contact.css';
 
 // Contact section with form and map placeholder
@@ -108,56 +119,42 @@ const Contact = () => {
     }
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 },
-    },
-  };
-
   return (
     <section id="contact" className="contact">
       <motion.div 
         className="contact-container"
+        variants={formContainerVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
-        variants={containerVariants}
       >
         <motion.h2 
           className="section-title"
-          variants={itemVariants}
+          variants={sectionRevealVariants}
         >
           Contact Us
         </motion.h2>
 
-        <div className="contact-content">
+        <motion.div 
+          className="contact-content"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
           {/* Contact Form */}
           <motion.div 
             className="contact-form-wrapper"
-            variants={itemVariants}
+            variants={cardFadeInVariants}
           >
+            {/* Success Message with animation */}
             <AnimatePresence>
               {submitted && (
                 <motion.div 
                   className="success-message"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.3 }}
+                  variants={successMessageVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
                 >
                   <i className="fas fa-check-circle"></i>
                   <p>Thank you! We will contact you soon.</p>
@@ -165,23 +162,30 @@ const Contact = () => {
               )}
             </AnimatePresence>
 
+            {/* Error Message with shake animation */}
             {serverError && (
-              <div className="server-error">
+              <motion.div 
+                className="server-error"
+                variants={errorShakeVariants}
+                initial="rest"
+                animate={serverError ? "shake" : "rest"}
+              >
                 <i className="fas fa-exclamation-circle"></i>
                 <span>{serverError}</span>
-              </div>
+              </motion.div>
             )}
 
-            <form className="contact-form" onSubmit={handleSubmit}>
-              {/* Name Input */}
+            <motion.form 
+              className="contact-form" 
+              onSubmit={handleSubmit}
+            >
+              {/* Name Input - Animated */}
               <motion.div 
-                className="form-group"
-                initial={{ y: 20, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.1 }}
+                className={`form-group ${errors.name ? 'error-state' : ''}`}
+                variants={cardFadeInVariants}
               >
                 <label htmlFor="name">Name *</label>
-                <input
+                <motion.input
                   type="text"
                   id="name"
                   name="name"
@@ -189,19 +193,33 @@ const Contact = () => {
                   onChange={handleChange}
                   className={errors.name ? 'error' : ''}
                   placeholder="Your name"
+                  variants={inputFocusVariants}
+                  initial="rest"
+                  whileFocus="focus"
                 />
-                {errors.name && <span className="error-text">{errors.name}</span>}
+                {/* Error message with animation */}
+                <AnimatePresence>
+                  {errors.name && (
+                    <motion.span 
+                      className="error-text"
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      {errors.name}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
               </motion.div>
 
-              {/* Mobile Input */}
+              {/* Mobile Input - Animated */}
               <motion.div 
-                className="form-group"
-                initial={{ y: 20, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.2 }}
+                className={`form-group ${errors.mobile ? 'error-state' : ''}`}
+                variants={cardFadeInVariants}
               >
                 <label htmlFor="mobile">Mobile Number *</label>
-                <input
+                <motion.input
                   type="tel"
                   id="mobile"
                   name="mobile"
@@ -209,19 +227,33 @@ const Contact = () => {
                   onChange={handleChange}
                   className={errors.mobile ? 'error' : ''}
                   placeholder="10-digit mobile number"
+                  variants={inputFocusVariants}
+                  initial="rest"
+                  whileFocus="focus"
                 />
-                {errors.mobile && <span className="error-text">{errors.mobile}</span>}
+                {/* Error message with animation */}
+                <AnimatePresence>
+                  {errors.mobile && (
+                    <motion.span 
+                      className="error-text"
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      {errors.mobile}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
               </motion.div>
 
-              {/* Email Input */}
+              {/* Email Input - Animated */}
               <motion.div 
-                className="form-group"
-                initial={{ y: 20, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.3 }}
+                className={`form-group ${errors.email ? 'error-state' : ''}`}
+                variants={cardFadeInVariants}
               >
                 <label htmlFor="email">Email *</label>
-                <input
+                <motion.input
                   type="email"
                   id="email"
                   name="email"
@@ -229,19 +261,33 @@ const Contact = () => {
                   onChange={handleChange}
                   className={errors.email ? 'error' : ''}
                   placeholder="your@email.com"
+                  variants={inputFocusVariants}
+                  initial="rest"
+                  whileFocus="focus"
                 />
-                {errors.email && <span className="error-text">{errors.email}</span>}
+                {/* Error message with animation */}
+                <AnimatePresence>
+                  {errors.email && (
+                    <motion.span 
+                      className="error-text"
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      {errors.email}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
               </motion.div>
 
-              {/* Message Input */}
+              {/* Message Input - Animated */}
               <motion.div 
-                className="form-group"
-                initial={{ y: 20, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.4 }}
+                className={`form-group ${errors.message ? 'error-state' : ''}`}
+                variants={cardFadeInVariants}
               >
                 <label htmlFor="message">Message *</label>
-                <textarea
+                <motion.textarea
                   id="message"
                   name="message"
                   value={formData.message}
@@ -249,33 +295,55 @@ const Contact = () => {
                   className={errors.message ? 'error' : ''}
                   placeholder="Your message..."
                   rows="4"
-                ></textarea>
-                {errors.message && <span className="error-text">{errors.message}</span>}
+                  variants={inputFocusVariants}
+                  initial="rest"
+                  whileFocus="focus"
+                ></motion.textarea>
+                {/* Error message with animation */}
+                <AnimatePresence>
+                  {errors.message && (
+                    <motion.span 
+                      className="error-text"
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      {errors.message}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
               </motion.div>
 
-              {/* Submit Button */}
+              {/* Submit Button - Enhanced animations */}
               <motion.button 
                 type="submit"
                 className="submit-btn"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                variants={buttonRippleVariants}
+                initial="rest"
+                whileHover="hover"
+                whileTap="tap"
                 disabled={loading}
               >
                 <span>{loading ? 'Sending...' : 'Send Message'}</span>
                 <i className="fas fa-paper-plane"></i>
               </motion.button>
-            </form>
+            </motion.form>
           </motion.div>
 
           {/* Contact Info & Map */}
           <motion.div 
             className="contact-info-wrapper"
-            variants={itemVariants}
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
           >
-            {/* Address Card */}
+            {/* Address Card - with hover lift */}
             <motion.div 
               className="address-card"
-              whileHover={{ y: -10 }}
+              variants={cardHoverVariants}
+              initial="rest"
+              whileHover="hover"
             >
               <i className="fas fa-map-marker-alt"></i>
               <h3>Our Location</h3>
@@ -284,16 +352,18 @@ const Contact = () => {
               <p>India</p>
             </motion.div>
 
-            {/* Map Placeholder */}
+            {/* Map Placeholder - with hover glow */}
             <motion.div 
               className="map-placeholder"
-              whileHover={{ boxShadow: '0 20px 50px rgba(139, 69, 19, 0.2)' }}
+              variants={cardHoverVariants}
+              initial="rest"
+              whileHover="hover"
             >
               <i className="fas fa-map"></i>
               <p>Google Map - Location Coming Soon</p>
             </motion.div>
           </motion.div>
-        </div>
+        </motion.div>
       </motion.div>
     </section>
   );

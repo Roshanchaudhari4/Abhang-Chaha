@@ -1,8 +1,18 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import {
+  imageHoverZoomVariants,
+  imageFocusRingVariants,
+  imageOverlayVariants,
+  cardFadeInVariants,
+  containerVariants,
+  sectionRevealVariants,
+  modalBackdropVariants,
+  modalContentVariants,
+} from '../animations/variants';
 import '../styles/gallery.css';
 
-// Gallery section with hover zoom animations
+// Gallery section with image zoom & enhanced hover animations
 const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [filter, setFilter] = useState('all');
@@ -48,26 +58,6 @@ const Gallery = () => {
 
   const filteredImages = filter === 'all' ? images : images.filter(img => img.category === filter);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, scale: 0.9 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: { duration: 0.5 },
-    },
-  };
-
   return (
     <section id="gallery" className="gallery">
       <motion.div 
@@ -78,7 +68,7 @@ const Gallery = () => {
       >
         <motion.h2 
           className="section-title"
-          variants={itemVariants}
+          variants={sectionRevealVariants}
         >
           <i className="fas fa-image"></i> Photo Gallery
         </motion.h2>
@@ -86,7 +76,7 @@ const Gallery = () => {
         {/* Filter Buttons */}
         <motion.div 
           className="gallery-filters"
-          variants={itemVariants}
+          variants={cardFadeInVariants}
         >
           {['all', 'cups', 'drinks', 'stall', 'brewing'].map((cat) => (
             <motion.button
@@ -101,49 +91,65 @@ const Gallery = () => {
           ))}
         </motion.div>
 
+        {/* Gallery Grid with image zoom hover */}
         <motion.div 
           className="gallery-grid"
           variants={containerVariants}
+          initial="hidden"
+          animate="visible"
           key={filter}
         >
-          {filteredImages.map((image) => (
+          {filteredImages.map((image, idx) => (
             <motion.div 
               key={image.id}
               className="gallery-item"
-              variants={itemVariants}
-              whileHover={{ scale: 1.08 }}
+              variants={cardFadeInVariants}
+              custom={idx}
+              initial="hidden"
+              animate="visible"
               onClick={() => setSelectedImage(image)}
             >
               <div className="gallery-image-wrapper">
-                <img 
+                <motion.img 
                   src={image.url} 
                   alt={image.title}
                   className="gallery-image"
+                  variants={imageHoverZoomVariants}
+                  initial="rest"
+                  whileHover="hover"
                 />
-                <div className="gallery-overlay">
+                {/* Overlay with focus ring animation */}
+                <motion.div 
+                  className="gallery-overlay"
+                  variants={imageOverlayVariants}
+                  initial="hidden"
+                  whileHover="visible"
+                >
                   <p>{image.title}</p>
                   <i className="fas fa-search-plus"></i>
-                </div>
+                </motion.div>
               </div>
             </motion.div>
           ))}
         </motion.div>
 
-        {/* Lightbox Modal */}
+        {/* Lightbox Modal - animated entrance/exit */}
         <AnimatePresence>
           {selectedImage && (
             <motion.div 
               className="lightbox"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              variants={modalBackdropVariants}
+              initial="hidden"
+              animate="visible"
               exit={{ opacity: 0 }}
               onClick={() => setSelectedImage(null)}
             >
               <motion.div 
                 className="lightbox-content"
-                initial={{ scale: 0.9 }}
-                animate={{ scale: 1 }}
-                exit={{ scale: 0.9 }}
+                variants={modalContentVariants}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
                 onClick={(e) => e.stopPropagation()}
               >
                 <button className="lightbox-close" onClick={() => setSelectedImage(null)}>

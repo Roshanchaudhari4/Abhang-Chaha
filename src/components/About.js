@@ -1,5 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import {
+  containerVariants,
+  cardFadeInVariants,
+  cardHoverVariants,
+  sectionRevealVariants,
+  textRevealVariants,
+  hoverGlowVariants,
+} from '../animations/variants';
 import '../styles/about.css';
 
 // About section with card layout and hover animations
@@ -31,26 +39,6 @@ const About = () => {
     { number: '10 yrs', label: 'Experience' }
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 },
-    },
-  };
-
   return (
     <section id="about" className="about">
       <motion.div 
@@ -62,14 +50,18 @@ const About = () => {
       >
         <motion.h2 
           className="section-title"
-          variants={itemVariants}
+          variants={sectionRevealVariants}
         >
           <i className="fas fa-info-circle"></i> About Abhang Chaha
         </motion.h2>
 
+        {/* About Description with text reveal */}
         <motion.p 
           className="about-description"
-          variants={itemVariants}
+          variants={textRevealVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
         >
           Abhang Chaha is a cozy tea shop dedicated to bringing you the finest 
           tea experiences. We believe in the power of a perfect cup of tea to 
@@ -77,22 +69,27 @@ const About = () => {
           with a modern twist, made from the freshest ingredients.
         </motion.p>
 
-        {/* Stats Section */}
+        {/* Stats Section - Animated counters */}
         <motion.div 
           className="stats-grid"
           variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
         >
           {stats.map((stat, index) => (
             <motion.div 
               key={index}
               className="stat-card"
-              variants={itemVariants}
-              whileHover={{ scale: 1.05 }}
+              variants={cardFadeInVariants}
+              custom={index}
+              whileHover="hover"
             >
               <motion.div 
                 className="stat-number"
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
+                variants={cardHoverVariants}
+                initial="rest"
+                whileHover="hover"
               >
                 {stat.number}
               </motion.div>
@@ -101,31 +98,44 @@ const About = () => {
           ))}
         </motion.div>
 
+        {/* Features Grid with hover lift */}
         <motion.div 
           className="features-grid"
           variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
         >
           {features.map((feature, index) => (
             <motion.div 
               key={index}
               className="feature-card"
-              variants={itemVariants}
-              whileHover={{ 
-                y: -10,
-                boxShadow: '0 15px 40px rgba(139, 69, 19, 0.2)'
-              }}
-              style={{ borderTopColor: feature.color }}
+              variants={cardFadeInVariants}
+              custom={index}
+              initial="hidden"
+              animate="visible"
+              whileHover="hover"
             >
-              <motion.div 
-                className="feature-icon"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
-                style={{ color: feature.color }}
+              {/* Card Container with hover lift & glow */}
+              <motion.div
+                variants={cardHoverVariants}
+                initial="rest"
+                whileHover="hover"
+                style={{ width: '100%', height: '100%' }}
               >
-                <i className={`fas ${feature.icon}`}></i>
+                {/* Rotating Icon */}
+                <motion.div 
+                  className="feature-icon"
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+                  style={{ color: feature.color }}
+                  whileHover={{ scale: 1.2, rotate: 0 }}
+                >
+                  <i className={`fas ${feature.icon}`}></i>
+                </motion.div>
+                <h3>{feature.title}</h3>
+                <p>{feature.description}</p>
               </motion.div>
-              <h3>{feature.title}</h3>
-              <p>{feature.description}</p>
             </motion.div>
           ))}
         </motion.div>

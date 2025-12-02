@@ -1,11 +1,22 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  containerVariants,
+  cardFadeInVariants,
+  cardHoverVariants,
+  buttonRippleVariants,
+  sectionRevealVariants,
+  hoverGlowVariants,
+  hoverBounceVariants,
+} from '../animations/variants';
+import Checkout from './Checkout';
 import '../styles/menu.css';
 
 // Menu section with animated tea item cards
 const Menu = () => {
   const [cartItems, setCartItems] = useState([]);
   const [showCart, setShowCart] = useState(false);
+  const [showCheckout, setShowCheckout] = useState(false);
 
   const teaItems = [
     {
@@ -60,24 +71,14 @@ const Menu = () => {
 
   const totalPrice = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 40 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 },
-    },
+  // Handle order success
+  const handleOrderSuccess = (order) => {
+    // Clear cart after successful order
+    setCartItems([]);
+    setShowCheckout(false);
+    setShowCart(false);
+    console.log('Order placed:', order);
+    // Optional: Show toast notification or redirect
   };
 
   return (
@@ -87,116 +88,215 @@ const Menu = () => {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
+        variants={containerVariants}
       >
         <motion.h2 
           className="section-title"
-          variants={itemVariants}
+          variants={sectionRevealVariants}
         >
           <i className="fas fa-mug-hot"></i> Our Menu
         </motion.h2>
 
+        {/* Menu Grid with staggered card animations */}
         <motion.div 
           className="menu-grid"
           variants={containerVariants}
+          initial="hidden"
+          animate="visible"
         >
-          {teaItems.map((item) => (
+          {teaItems.map((item, idx) => (
             <motion.div 
               key={item.id}
               className="menu-card"
-              variants={itemVariants}
-              whileHover={{ 
-                y: -15,
-                boxShadow: '0 20px 50px rgba(139, 69, 19, 0.25)'
-              }}
+              variants={cardFadeInVariants}
+              custom={idx}
+              initial="hidden"
+              animate="visible"
+              whileHover="hover"
             >
-              <div className="menu-icon">
-                <span>{item.icon}</span>
-              </div>
-              <h3>{item.name}</h3>
-              <p className="menu-description">{item.description}</p>
-              <motion.p 
-                className="menu-price"
-                whileHover={{ scale: 1.15 }}
+              {/* Card Container with hover lift & glow */}
+              <motion.div
+                variants={cardHoverVariants}
+                initial="rest"
+                whileHover="hover"
+                style={{ width: '100%', height: '100%' }}
               >
-                ₹{item.price}
-              </motion.p>
-              <motion.button 
-                className="add-to-cart-btn"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => addToCart(item)}
-              >
-                <i className="fas fa-shopping-cart"></i> Add
-              </motion.button>
+                <div className="menu-icon">
+                  <motion.span
+                    whileHover={{ scale: 1.2, rotate: 10 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
+                  >
+                    {item.icon}
+                  </motion.span>
+                </div>
+                <h3>{item.name}</h3>
+                <p className="menu-description">{item.description}</p>
+                
+                {/* Price with hover scale */}
+                <motion.p 
+                  className="menu-price"
+                  whileHover={{ scale: 1.15 }}
+                  transition={{ type: 'spring', stiffness: 400 }}
+                >
+                  ₹{item.price}
+                </motion.p>
+                
+                {/* Add to Cart Button with ripple */}
+                <motion.button 
+                  className="add-to-cart-btn"
+                  variants={buttonRippleVariants}
+                  initial="rest"
+                  whileHover="hover"
+                  whileTap="tap"
+                  onClick={() => addToCart(item)}
+                >
+                  <i className="fas fa-shopping-cart"></i> Add
+                </motion.button>
+              </motion.div>
             </motion.div>
           ))}
         </motion.div>
 
-        {/* Floating Cart Button */}
+        {/* Floating Cart Button - with bounce on hover */}
         <motion.div 
           className={`floating-cart ${cartItems.length > 0 ? 'active' : ''}`}
           animate={{ scale: cartItems.length > 0 ? 1 : 0 }}
           transition={{ type: 'spring', stiffness: 300 }}
           onClick={() => setShowCart(!showCart)}
+          variants={hoverBounceVariants}
+          whileHover="hover"
         >
-          <i className="fas fa-shopping-bag"></i>
+          <motion.i 
+            className="fas fa-shopping-bag"
+            animate={{ rotate: showCart ? 10 : 0 }}
+          ></motion.i>
           {cartItems.length > 0 && (
             <motion.span 
               className="cart-badge"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              key={cartItems.length}
             >
               {cartItems.length}
             </motion.span>
           )}
         </motion.div>
 
-        {/* Cart Sidebar */}
+        {/* Cart Sidebar - Animated slide-in/out */}
+        <AnimatePresence>
+          {showCart && (
+            <motion.div 
+              className="cart-sidebar-backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowCart(false)}
+            />
+          )}
+        </AnimatePresence>
+
         <motion.div 
           className={`cart-sidebar ${showCart ? 'open' : ''}`}
           initial={{ x: 400 }}
           animate={{ x: showCart ? 0 : 400 }}
+          exit={{ x: 400 }}
           transition={{ type: 'spring', damping: 20 }}
         >
-          <div className="cart-header">
+          <motion.div 
+            className="cart-header"
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.1 }}
+          >
             <h3>Your Order</h3>
-            <button onClick={() => setShowCart(false)}>
+            <motion.button 
+              onClick={() => setShowCart(false)}
+              whileHover={{ scale: 1.1, rotate: 90 }}
+              whileTap={{ scale: 0.9 }}
+            >
               <i className="fas fa-times"></i>
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
 
-          {cartItems.length > 0 ? (
-            <>
-              <div className="cart-items">
-                {cartItems.map((item) => (
-                  <motion.div 
-                    key={item.id}
-                    className="cart-item"
-                    initial={{ x: 20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    exit={{ x: 20, opacity: 0 }}
+          <AnimatePresence mode="wait">
+            {cartItems.length > 0 ? (
+              <>
+                <motion.div 
+                  className="cart-items"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  {cartItems.map((item) => (
+                    <motion.div 
+                      key={item.id}
+                      className="cart-item"
+                      layout
+                      initial={{ x: 20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      exit={{ x: 20, opacity: 0 }}
+                      transition={{ type: 'spring', stiffness: 300 }}
+                    >
+                      <div>
+                        <p className="cart-item-name">{item.name}</p>
+                        <p className="cart-item-price">₹{item.price} × {item.quantity}</p>
+                      </div>
+                      <motion.button 
+                        className="remove-btn" 
+                        onClick={() => removeFromCart(item.id)}
+                        whileHover={{ scale: 1.2, color: '#E84C3D' }}
+                        whileTap={{ scale: 0.9 }}
+                      >
+                        <i className="fas fa-trash"></i>
+                      </motion.button>
+                    </motion.div>
+                  ))}
+                </motion.div>
+                
+                <motion.div 
+                  className="cart-total"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <p>Total: <strong>₹{totalPrice}</strong></p>
+                  <motion.button 
+                    className="checkout-btn"
+                    variants={buttonRippleVariants}
+                    initial="rest"
+                    whileHover="hover"
+                    whileTap="tap"
+                    onClick={() => setShowCheckout(true)}
                   >
-                    <div>
-                      <p className="cart-item-name">{item.name}</p>
-                      <p className="cart-item-price">₹{item.price} × {item.quantity}</p>
-                    </div>
-                    <button className="remove-btn" onClick={() => removeFromCart(item.id)}>
-                      <i className="fas fa-trash"></i>
-                    </button>
-                  </motion.div>
-                ))}
-              </div>
-              <div className="cart-total">
-                <p>Total: <strong>₹{totalPrice}</strong></p>
-                <button className="checkout-btn">
-                  <i className="fas fa-check"></i> Proceed
-                </button>
-              </div>
-            </>
-          ) : (
-            <p className="empty-cart">Your cart is empty</p>
-          )}
+                    <i className="fas fa-check"></i> Proceed to Checkout
+                  </motion.button>
+                </motion.div>
+              </>
+            ) : (
+              <motion.p 
+                className="empty-cart"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                Your cart is empty
+              </motion.p>
+            )}
+          </AnimatePresence>
         </motion.div>
+
+        {/* Checkout Modal */}
+        <AnimatePresence>
+          {showCheckout && (
+            <Checkout
+              cartItems={cartItems}
+              totalAmount={totalPrice}
+              onOrderSuccess={handleOrderSuccess}
+              onClose={() => setShowCheckout(false)}
+            />
+          )}
+        </AnimatePresence>
       </motion.div>
     </section>
   );

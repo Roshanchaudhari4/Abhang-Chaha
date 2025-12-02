@@ -7,6 +7,7 @@ import Menu from './components/Menu';
 import Feedback from './components/Feedback';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import TeaBot from './components/TeaBot';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Feedback />
       <Contact />
       <Footer />
+      <TeaBot />
     </div>
   );
 }
