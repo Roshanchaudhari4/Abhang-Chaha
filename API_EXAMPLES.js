@@ -22,6 +22,7 @@
  */
 
 // Example 1: Single item order
+/* 
 POST /api/orders
 Content-Type: application/json
 
@@ -40,7 +41,7 @@ Content-Type: application/json
   "orderStatus": "CONFIRMED"
 }
 
-// Response (Success):
+Response (Success):
 {
   "success": true,
   "message": "Order placed successfully!",
@@ -61,9 +62,11 @@ Content-Type: application/json
     "createdAt": "2025-01-10T10:30:00.000Z"
   }
 }
+*/
 
 
 // Example 2: Multiple items order
+/*
 POST /api/orders
 Content-Type: application/json
 
@@ -88,7 +91,7 @@ Content-Type: application/json
   "orderStatus": "CONFIRMED"
 }
 
-// Response (Success):
+Response (Success):
 {
   "success": true,
   "message": "Order placed successfully!",
@@ -102,9 +105,11 @@ Content-Type: application/json
     "createdAt": "2025-01-10T10:35:00.000Z"
   }
 }
+*/
 
 
 // Example 3: Invalid UPI ID (Error)
+/*
 POST /api/orders
 Content-Type: application/json
 
@@ -116,14 +121,16 @@ Content-Type: application/json
   "orderStatus": "CONFIRMED"
 }
 
-// Response (Error):
+Response (Error):
 {
   "success": false,
   "message": "Invalid UPI ID format. Example: example@upi"
 }
+*/
 
 
 // Example 4: Empty cart (Error)
+/*
 POST /api/orders
 Content-Type: application/json
 
@@ -135,11 +142,12 @@ Content-Type: application/json
   "orderStatus": "CONFIRMED"
 }
 
-// Response (Error):
+Response (Error):
 {
   "success": false,
   "message": "Order must contain at least one item"
 }
+*/
 
 
 // ============================================
@@ -151,9 +159,10 @@ Content-Type: application/json
  * Get order details by order ID
  */
 
+/*
 GET /api/orders/507f1f77bcf86cd799439011
 
-// Response (Success):
+Response (Success):
 {
   "success": true,
   "order": {
@@ -175,11 +184,12 @@ GET /api/orders/507f1f77bcf86cd799439011
   }
 }
 
-// Response (Not Found):
+Response (Not Found):
 {
   "success": false,
   "message": "Order not found"
 }
+*/
 
 
 // ============================================
@@ -191,9 +201,10 @@ GET /api/orders/507f1f77bcf86cd799439011
  * Get list of all orders (for admin)
  */
 
+/*
 GET /api/orders
 
-// Response:
+Response:
 {
   "success": true,
   "count": 3,
@@ -227,13 +238,15 @@ GET /api/orders
     }
   ]
 }
+*/
 
 
 // ============================================
 // 4. VALID UPI ID FORMATS
 // ============================================
 
-// ✅ VALID UPI IDs:
+/*
+VALID UPI IDs:
 user@upi
 john@paytm
 customer123@okaxis
@@ -241,12 +254,13 @@ test.user@upi
 user_123@bank
 user-name@service
 
-// ❌ INVALID UPI IDs:
+INVALID UPI IDs:
 user           (missing @)
 user@          (missing bank code)
 @upi           (missing username)
 user @ upi     (spaces not allowed)
 user@123       (bank code must be letters)
+*/
 
 
 // ============================================
@@ -256,6 +270,7 @@ user@123       (bank code must be letters)
 /**
  * Create Order
  */
+/*
 curl -X POST http://localhost:5000/api/orders \
   -H "Content-Type: application/json" \
   -d '{
@@ -279,17 +294,12 @@ curl -X POST http://localhost:5000/api/orders \
     "orderStatus": "CONFIRMED"
   }'
 
+// Get All Orders
+// curl http://localhost:5000/api/orders
 
-/**
- * Get All Orders
- */
-curl http://localhost:5000/api/orders
-
-
-/**
- * Get Specific Order (replace with actual order ID)
- */
-curl http://localhost:5000/api/orders/507f1f77bcf86cd799439011
+// Get Specific Order (replace with actual order ID)
+// curl http://localhost:5000/api/orders/507f1f77bcf86cd799439011
+*/
 
 
 // ============================================
@@ -376,23 +386,28 @@ try {
 /**
  * Payment Status Options:
  */
+/*
 PAID        // Payment received
 PENDING     // Awaiting payment
 FAILED      // Payment failed
+*/
 
 /**
  * Order Status Options:
  */
+/*
 CONFIRMED   // Order confirmed
 PROCESSING  // Being prepared
 COMPLETED   // Ready for pickup/delivery
 CANCELLED   // Order cancelled
+*/
 
 
 // ============================================
 // 9. COMMON ERROR RESPONSES
 // ============================================
 
+/*
 // Error: Empty Items
 {
   "success": false,
@@ -423,15 +438,15 @@ CANCELLED   // Order cancelled
   "message": "Failed to create order",
   "error": "Error details here"
 }
+*/
 
 
 // ============================================
 // 10. FULL REQUEST/RESPONSE EXAMPLE
 // ============================================
 
-/**
- * REQUEST:
- */
+/*
+REQUEST:
 POST /api/orders HTTP/1.1
 Host: localhost:5000
 Content-Type: application/json
@@ -452,9 +467,7 @@ Content-Length: 247
   "orderStatus": "CONFIRMED"
 }
 
-/**
- * RESPONSE (Status: 201 Created):
- */
+RESPONSE (Status: 201 Created):
 HTTP/1.1 201 Created
 Content-Type: application/json
 
@@ -478,6 +491,7 @@ Content-Type: application/json
     "createdAt": "2025-01-10T10:30:00.000Z"
   }
 }
+*/
 
 
 // ============================================
